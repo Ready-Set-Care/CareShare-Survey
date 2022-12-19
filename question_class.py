@@ -1,10 +1,16 @@
-import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 def get_value_pcts(df_question):
     vc = df_question.value_counts()
     vc = vc.apply(lambda x: round((x / vc.sum())*100))
+    return vc
+
+def get_vc(df_question):
+    vc = df_question.value_counts().reset_index()
+    vc.columns.values[0] = 'Answer'
+    vc.columns.values[1] = 'Counts'
+    vc["Percent"] = vc['Counts'].apply(lambda x: round((x / vc['Counts'].sum())*100))
     return vc
 
 
@@ -58,7 +64,11 @@ class LikertQuestion(Question):
                 col2.metric("2", f'0%')
         col3.metric("3", f'{self.vc[3]}%')
         col4.metric("4", f'{self.vc[4]}%')
-        col5.metric("5", f'{self.vc[5]}%')
+        with col5:
+            try:
+                col5.metric("5", f'{self.vc[5]}%')
+            except KeyError:
+                col5.metric("5", f'0%')
 
 class ShortQuestion(Question):
     def __init__(self, question, response_df) -> None:
@@ -71,12 +81,10 @@ class ShortQuestion(Question):
 class MultipleQuestion(Question):
     def __init__(self, question, response_df) -> None:
         super().__init__(question, response_df)
-        self.vc = get_value_pcts(self.response_df[self.question]).reset_index()
+        self.vc = get_vc(self.response_df[self.question])
 
     def display_data(self):
-        self.vc.columns.values[0] = "Answer"
-        self.vc.columns.values[1] = 'Counts'
-        fig = px.bar(self.vc, x='Answer', y='Counts')
+        fig = px.bar(self.vc, x='Answer', y='Counts', hover_data=['Percent'])
         st.plotly_chart(fig, theme='streamlit')
 
 
