@@ -35,6 +35,7 @@ def prepare_respondent_data(respondents_path: str, other_path) -> pd.DataFrame:
         Link to respondent dataset in .csv format
     """
     responses = pd.read_csv(respondents_path, index_col=0)
+    responses["Q2"] = responses["Q2"].fillna('other')
 
     return responses
 

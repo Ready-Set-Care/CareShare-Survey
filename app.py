@@ -1,4 +1,7 @@
 import streamlit as st
+from PIL import Image
+import requests
+from io import BytesIO
 
 # Custom Functions
 import preprocessing
@@ -77,8 +80,11 @@ def load_results_page(df):
         segmentation = segmentations.get_segmentation("More or less fair", df)
         results.get_response_data(df, segmentation, "Q9")
     elif option == "Kano-All Respondents":
-        image_path = "https://github.com/Ready-Set-Care/CareShare-Survey/blob/main/images/CareShare-Kano-Results.png"
-        st.image(image_path)
+        image_url = "https://raw.githubusercontent.com/Ready-Set-Care/CareShare-Survey/main/images/CareShare-Kano-Results.png"
+
+        response = requests.get(image_url)
+        img = Image.open(BytesIO(response.content))
+        st.image(img)
     else:
         results.get_response_data(df)
 
