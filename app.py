@@ -37,7 +37,6 @@ def load_homepage():
     """
     The homepage is loaded using .markdown.
     """
-    ##st.markdown("## Survey Information")
     st.markdown("**Total Participants:** 301")
     st.markdown("**Launched On:** December 8, 2022")
     
@@ -80,8 +79,6 @@ def load_results_page(df):
         results.get_response_data(df, segmentation, "Q9")
     else:
         results.get_response_data(df)
-
-    #results.get_response_data(df, segmentation)
 
 
 if __name__ == "__main__":
