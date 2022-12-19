@@ -66,7 +66,7 @@ def load_question_page(df):
 def load_results_page(df):
     option = st.selectbox(
         "Select the one of the segmentations:",
-        ("All Respondents", "Provider/Receiver", "More/Less Fair"))
+        ("All Respondents", "Provider/Receiver", "More/Less Fair", "Kano-All Respondents"))
 
     st.markdown(f'## Survey Results for {option}')
 
@@ -76,6 +76,9 @@ def load_results_page(df):
     elif option == "More/Less Fair":
         segmentation = segmentations.get_segmentation("More or less fair", df)
         results.get_response_data(df, segmentation, "Q9")
+    elif option == "Kano-All Respondents":
+        image_path = "https://github.com/Ready-Set-Care/CareShare-Survey/blob/main/images/CareShare-Kano-Results.png"
+        st.image(image_path)
     else:
         results.get_response_data(df)
 
