@@ -1,5 +1,3 @@
-import os
-import pathlib
 import streamlit as st
 
 # Custom Functions
@@ -22,11 +20,11 @@ def main():
 @st.cache # Caches the data and only run it if it has not been seen before
 def load_data(): 
     #DATA_PATH = os.path.join(pathlib.Path(__file__).parent.resolve(), "data")
-    DATA_URL = 'https://github.com/Ready-Set-Care/CareShare-Survey/tree/main/data'
+    DATA_URL = "https://raw.githubusercontent.com/Ready-Set-Care/CareShare-Survey/main/data/"
 
-    RESPONDENTS_PATH = DATA_URL + "/survey_responses.csv"
-    OTHER_PATH = DATA_URL + "/other_responses.csv"
-    QUESTION_PATH = DATA_URL + "/CareShare_Survey_Results-Questions.csv"
+    RESPONDENTS_PATH = DATA_URL + "survey_responses.csv"
+    OTHER_PATH = DATA_URL + "other_responses.csv"
+    QUESTION_PATH = DATA_URL + "CareShare_Survey_Results-Questions.csv"
     
     question_df = preprocessing.prepare_questions(QUESTION_PATH)
     respondent_df = preprocessing.prepare_respondent_data(RESPONDENTS_PATH, OTHER_PATH)

@@ -1,5 +1,3 @@
-import pandas as pd
-
 def get_segmentation(segment_name, df):
     """
     Parameters
