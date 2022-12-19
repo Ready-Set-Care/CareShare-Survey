@@ -21,6 +21,13 @@ class Question:
         self.question = question
         self.response_df = response_df
         self.count = self.response_df[self.question].count()
+
+    def display_count(self):
+        if self.count == 301:
+            st.markdown("All participants answered this question.")
+        else:
+            st.markdown(f'{self.count} participants answered this question.')
+
         
 
 class NumericQuestion(Question):
@@ -32,6 +39,7 @@ class NumericQuestion(Question):
         self.max = round(self.response_df[self.question].max())
     
     def display_data(self) -> None:
+        self.display_count()
         data =  [self.mean, self.median, self.min, self.max]
         col1, col2, col3 = st.columns(3)
         col1.metric("Mean", f'${data[0]}')
@@ -48,6 +56,7 @@ class LikertQuestion(Question):
 
 
     def display_data(self) -> None:
+        self.display_count()
         st.markdown(f'**Mean:** {self.mean}')
         st.markdown(f'**Median:** {self.median}')
         st.markdown("##### Likert Breakdown")
@@ -75,6 +84,7 @@ class ShortQuestion(Question):
         self.answers = self.response_df.loc[self.response_df[self.question].notnull() == True][self.question]
 
     def display_data(self) -> None:
+        self.display_count()
         st.dataframe(self.answers)
 
 class MultipleQuestion(Question):
@@ -83,6 +93,7 @@ class MultipleQuestion(Question):
         self.vc = get_vc(self.response_df[self.question])
 
     def display_data(self) -> None:
+        self.display_count()
         fig = px.bar(self.vc, x='Answer', y='Counts', hover_data=['Percent'])
         st.plotly_chart(fig, theme='streamlit')
             
